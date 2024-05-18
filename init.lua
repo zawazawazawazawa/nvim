@@ -222,3 +222,4 @@ vim.keymap.set('t', '<C-[>', [[<C-\><C-n>]])
 
 -- normal mode keymap
 vim.keymap.set('n', 'tn', '<cmd>:tabn<CR>')
+vim.keymap.set('n', '<C-a>', '<C-w>')
