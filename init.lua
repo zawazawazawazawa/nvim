@@ -116,6 +116,9 @@ packer.startup(function()
 
 	use({ "windwp/nvim-ts-autotag" })
 
+  -- command palet
+  use({ "ctrlpvim/ctrlp.vim" })
+
 	-- flutter
 	use({ "akinsho/flutter-tools.nvim" })
   use({ "dart-lang/dart-vim-plugin" })
@@ -223,3 +226,6 @@ vim.keymap.set('t', '<C-[>', [[<C-\><C-n>]])
 -- normal mode keymap
 vim.keymap.set('n', 'tn', '<cmd>:tabn<CR>')
 vim.keymap.set('n', '<C-a>', '<C-w>')
+
+-- language
+vim.cmd('language messages en_US')
