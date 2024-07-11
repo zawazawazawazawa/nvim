@@ -92,7 +92,7 @@ packer.startup(function()
 	use({ "hrsh7th/cmp-nvim-lsp" })
 	use({ "hrsh7th/cmp-nvim-lua" })
 	use({ "onsails/lspkind-nvim" })
-        use({ "hrsh7th/vim-vsnip" })
+  use({ "hrsh7th/vim-vsnip" })
 
 	-- snippets
 	use({ "L3MON4D3/LuaSnip" }) --snippet engine
@@ -116,13 +116,17 @@ packer.startup(function()
 
 	use({ "windwp/nvim-ts-autotag" })
 
-  -- command palet
-  use({ "ctrlpvim/ctrlp.vim" })
-
 	-- flutter
 	use({ "akinsho/flutter-tools.nvim" })
   use({ "dart-lang/dart-vim-plugin" })
 
+  -- fuzzy finder
+  use({ "ibhagwan/fzf-lua",
+    -- optional for icon support
+    requires = { "nvim-tree/nvim-web-devicons" }
+  })
+
+  use({ "scrooloose/nerdtree" })
 
 	-- Automatically set up your configuration after cloning packer.nvim
 	-- Put this at the end after all plugins
@@ -229,3 +233,14 @@ vim.keymap.set('n', '<C-a>', '<C-w>')
 
 -- language
 vim.cmd('language messages en_US')
+
+-- fzf
+vim.keymap.set("n", "<c-P>",
+  "<cmd>lua require('fzf-lua').files()<CR>", { silent = true })
+
+-- NERDTree
+-- 起動時にNERDTreeを開く
+vim.cmd([[autocmd VimEnter * NERDTree]])
+
+-- NERDTreeのwindowしか開かれていない場合は自動的に閉じる
+vim.cmd([[autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif]])
