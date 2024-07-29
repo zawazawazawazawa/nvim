@@ -9,6 +9,7 @@ local options = {
   shiftwidth = 2,
   splitright = true,
   tabstop = 2,
+  foldmethod = "indent",
 }
 
 for k, v in pairs(options) do
@@ -126,7 +127,11 @@ packer.startup(function()
     requires = { "nvim-tree/nvim-web-devicons" }
   })
 
+  -- tree sidebar
   use({ "scrooloose/nerdtree" })
+
+  -- git
+  use({"dinhhuy258/git.nvim"})
 
 	-- Automatically set up your configuration after cloning packer.nvim
 	-- Put this at the end after all plugins
@@ -202,6 +207,8 @@ cmp.setup({
 
 -- flutter-tools
 require("flutter-tools").setup {} -- use defaults
+
+require('git').setup()
 
 -- flutter code action
 vim.keymap.set('n', 'K', '<cmd>lua vim.lsp.buf.hover()<cr>')
