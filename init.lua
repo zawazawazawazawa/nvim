@@ -193,13 +193,13 @@ cmp.setup({
     -- { name = "buffer" },
     -- { name = "path" },
   },
-  mapping = cmp.mapping.preset.insert({
-    ["<C-p>"] = cmp.mapping.select_prev_item(),
-    ["<C-n>"] = cmp.mapping.select_next_item(),
-    ['<C-l>'] = cmp.mapping.complete(),
-    ['<C-e>'] = cmp.mapping.abort(),
-    ["<CR>"] = cmp.mapping.confirm { select = true },
-  }),
+  -- mapping = cmp.mapping.preset.insert({
+  --   ["<C-p>"] = cmp.mapping.select_prev_item(),
+  --   ["<C-n>"] = cmp.mapping.select_next_item(),
+  --   ['<C-l>'] = cmp.mapping.complete(),
+  --   ['<C-e>'] = cmp.mapping.abort(),
+  --   ["<CR>"] = cmp.mapping.confirm { select = true },
+  -- }),
   experimental = {
     ghost_text = true,
   },
@@ -242,8 +242,13 @@ vim.keymap.set('n', '<C-a>', '<C-w>')
 vim.cmd('language messages en_US')
 
 -- fzf
-vim.keymap.set("n", "<c-P>",
-  "<cmd>lua require('fzf-lua').files()<CR>", { silent = true })
+vim.api.nvim_set_keymap("n", "<C-\\>", [[<Cmd>lua require"fzf-lua".buffers()<CR>]], {})
+vim.api.nvim_set_keymap("n", "<C-k>", [[<Cmd>lua require"fzf-lua".builtin()<CR>]], {})
+vim.api.nvim_set_keymap("n", "<C-p>", [[<Cmd>lua require"fzf-lua".files()<CR>]], {})
+vim.api.nvim_set_keymap("n", "<C-l>", [[<Cmd>lua require"fzf-lua".live_grep_glob()<CR>]], {})
+vim.api.nvim_set_keymap("n", "<C-g>", [[<Cmd>lua require"fzf-lua".grep_project()<CR>]], {})
+vim.api.nvim_set_keymap("n", "<F1>", [[<Cmd>lua require"fzf-lua".help_tags()<CR>]], {})
+
 
 -- NERDTree
 -- 起動時にNERDTreeを開く
