@@ -134,6 +134,12 @@ packer.startup(function()
   use({"dinhhuy258/git.nvim"})
   use({"lewis6991/gitsigns.nvim"})
 
+  -- csv
+  use({"mechatroner/rainbow_csv"})
+
+  -- copilot
+  use({"github/copilot.vim"})
+
 	-- Automatically set up your configuration after cloning packer.nvim
 	-- Put this at the end after all plugins
 	if PACKER_BOOTSTRAP then
@@ -154,12 +160,6 @@ local servers = {
 
 require('mason-lspconfig').setup_handlers({ function(server)
   local opt = {
-    -- Function executed when the LSP server startup
-    on_attach = function(client, bufnr)
-      local opts = { noremap=true, silent=true }
-      vim.api.nvim_buf_set_keymap(bufnr, 'n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
-      vim.cmd 'autocmd BufWritePre * lua vim.lsp.buf.formatting_sync(nil, 1000)'
-    end,
     capabilities = require('cmp_nvim_lsp').update_capabilities(
       vim.lsp.protocol.make_client_capabilities()
     ),
@@ -167,6 +167,59 @@ require('mason-lspconfig').setup_handlers({ function(server)
   }
   require('lspconfig')[server].setup(opt)
 end })
+
+local null_ls = require("null-ls")
+
+local group = vim.api.nvim_create_augroup("lsp_format_on_save", { clear = false })
+local event = "BufWritePre" -- or "BufWritePost"
+local async = event == "BufWritePost"
+
+null_ls.setup({
+  on_attach = function(client, bufnr)
+    if client.supports_method("textDocument/formatting") then
+      vim.keymap.set("n", "<Leader>f", function()
+        vim.lsp.buf.format({ bufnr = vim.api.nvim_get_current_buf() })
+      end, { buffer = bufnr, desc = "[lsp] format" })
+
+      -- format on save
+      vim.api.nvim_clear_autocmds({ buffer = bufnr, group = group })
+      vim.api.nvim_create_autocmd(event, {
+        buffer = bufnr,
+        group = group,
+        callback = function()
+          vim.lsp.buf.format({ bufnr = bufnr, async = async })
+        end,
+        desc = "[lsp] format on save",
+      })
+    end
+
+    if client.supports_method("textDocument/rangeFormatting") then
+      vim.keymap.set("x", "<Leader>f", function()
+        vim.lsp.buf.format({ bufnr = vim.api.nvim_get_current_buf() })
+      end, { buffer = bufnr, desc = "[lsp] format" })
+    end
+  end,
+})
+
+local prettier = require("prettier")
+
+prettier.setup({
+  bin = 'prettier', -- or `'prettierd'` (v0.23.3+)
+  filetypes = {
+    "css",
+    "graphql",
+    "html",
+    "javascript",
+    "javascriptreact",
+    "json",
+    "less",
+    "markdown",
+    "scss",
+    "typescript",
+    "typescriptreact",
+    "yaml",
+  },
+})
 
 -- 2. build-in LSP function
 -- keyboard shortcut
@@ -276,59 +329,6 @@ vim.keymap.set('n', 'K', '<cmd>lua vim.lsp.buf.hover()<cr>')
 vim.keymap.set('n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<cr>')
 vim.keymap.set('v', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<cr>')
 
-local null_ls = require("null-ls")
-
-local group = vim.api.nvim_create_augroup("lsp_format_on_save", { clear = false })
-local event = "BufWritePre" -- or "BufWritePost"
-local async = event == "BufWritePost"
-
-null_ls.setup({
-  on_attach = function(client, bufnr)
-    if client.supports_method("textDocument/formatting") then
-      vim.keymap.set("n", "<Leader>f", function()
-        vim.lsp.buf.format({ bufnr = vim.api.nvim_get_current_buf() })
-      end, { buffer = bufnr, desc = "[lsp] format" })
-
-      -- format on save
-      vim.api.nvim_clear_autocmds({ buffer = bufnr, group = group })
-      vim.api.nvim_create_autocmd(event, {
-        buffer = bufnr,
-        group = group,
-        callback = function()
-          vim.lsp.buf.format({ bufnr = bufnr, async = async })
-        end,
-        desc = "[lsp] format on save",
-      })
-    end
-
-    if client.supports_method("textDocument/rangeFormatting") then
-      vim.keymap.set("x", "<Leader>f", function()
-        vim.lsp.buf.format({ bufnr = vim.api.nvim_get_current_buf() })
-      end, { buffer = bufnr, desc = "[lsp] format" })
-    end
-  end,
-})
-
-local prettier = require("prettier")
-
-prettier.setup({
-  bin = 'prettier', -- or `'prettierd'` (v0.23.3+)
-  filetypes = {
-    "css",
-    "graphql",
-    "html",
-    "javascript",
-    "javascriptreact",
-    "json",
-    "less",
-    "markdown",
-    "scss",
-    "typescript",
-    "typescriptreact",
-    "yaml",
-  },
-})
-
 -- terminal
 -- 自動でinsert modeにする
 vim.cmd([[autocmd TermOpen * :startinser]])
@@ -353,10 +353,10 @@ vim.cmd('language messages en_US')
 vim.api.nvim_set_keymap("n", "<C-\\>", [[<Cmd>lua require"fzf-lua".buffers()<CR>]], {})
 vim.api.nvim_set_keymap("n", "<C-k>", [[<Cmd>lua require"fzf-lua".builtin()<CR>]], {})
 vim.api.nvim_set_keymap("n", "<C-p>", [[<Cmd>lua require"fzf-lua".files()<CR>]], {})
-vim.api.nvim_set_keymap("n", "<C-l>", [[<Cmd>lua require"fzf-lua".live_grep_glob()<CR>]], {})
+vim.api.nvim_set_keymap("n", "<C-l>", [[<Cmd>lua require"fzf-lua".live_grep_glob({ continue_last_search = true })<CR>]], {})
+vim.api.nvim_set_keymap("n", "<Cs-l>", [[<Cmd>lua require"fzf-lua".live_grep_glob()<CR>]], {})
 vim.api.nvim_set_keymap("n", "<C-g>", [[<Cmd>lua require"fzf-lua".grep_project()<CR>]], {})
 vim.api.nvim_set_keymap("n", "<F1>", [[<Cmd>lua require"fzf-lua".help_tags()<CR>]], {})
-
 
 -- NERDTree
 -- 起動時にNERDTreeを開く
@@ -364,3 +364,6 @@ vim.cmd([[autocmd VimEnter * NERDTree]])
 
 -- NERDTreeのwindowしか開かれていない場合は自動的に閉じる
 vim.cmd([[autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif]])
+
+-- 起動時に全ての折りたたみを開く
+vim.cmd([[autocmd BufRead * normal zR]])
