@@ -257,17 +257,18 @@ cmp.setup({
     -- { name = "buffer" },
     -- { name = "path" },
   },
-  -- mapping = cmp.mapping.preset.insert({
-  --   ["<C-p>"] = cmp.mapping.select_prev_item(),
-  --   ["<C-n>"] = cmp.mapping.select_next_item(),
-  --   ['<C-l>'] = cmp.mapping.complete(),
-  --   ['<C-e>'] = cmp.mapping.abort(),
-  --   ["<CR>"] = cmp.mapping.confirm { select = true },
-  -- }),
-  experimental = {
-    ghost_text = true,
-  },
+  mapping = cmp.mapping.preset.insert({
+    ["<C-p>"] = cmp.mapping.select_prev_item(),
+    ["<C-n>"] = cmp.mapping.select_next_item(),
+    ['<C-l>'] = cmp.mapping.complete(),
+    ['<C-e>'] = cmp.mapping.abort(),
+    ["<CR>"] = cmp.mapping.confirm { select = true },
+  }),
 })
+
+vim.cmd([[
+  autocmd BufWritePre *.dart lua vim.lsp.buf.format()
+]])
 
 -- flutter-tools
 require("flutter-tools").setup {} -- use defaults
