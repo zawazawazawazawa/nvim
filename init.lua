@@ -237,10 +237,6 @@ cmp.setup({
   }),
 })
 
-vim.cmd([[
-  autocmd BufWritePre *.dart lua vim.lsp.buf.format()
-]])
-
 -- flutter-tools
 require("flutter-tools").setup {} -- use defaults
 
@@ -372,3 +368,8 @@ vim.cmd([[autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NE
 
 -- 起動時に全ての折りたたみを開く
 vim.cmd([[autocmd BufRead * normal zR]])
+
+vim.cmd([[
+  autocmd BufWritePre *.dart lua vim.lsp.buf.format()
+]])
+
