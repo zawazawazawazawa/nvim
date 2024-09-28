@@ -136,6 +136,9 @@ packer.startup(function()
   -- copilot
   use({ "github/copilot.vim" })
 
+  -- mapping
+  use({ "tpope/vim-unimpaired" })
+
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins
   if PACKER_BOOTSTRAP then
