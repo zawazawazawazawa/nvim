@@ -1,5 +1,3 @@
--- options
-
 local options = {
   autoindent = true,
   clipboard = "unnamed",
@@ -13,7 +11,7 @@ local options = {
 }
 
 for k, v in pairs(options) do
-	vim.opt[k] = v
+  vim.opt[k] = v
 end
 
 -- colorschema
@@ -34,16 +32,16 @@ local fn = vim.fn
 -- Automatically install packer
 local install_path = fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
 if fn.empty(fn.glob(install_path)) > 0 then
-	PACKER_BOOTSTRAP = fn.system({
-		"git",
-		"clone",
-		"--depth",
-		"1",
-		"https://github.com/wbthomason/packer.nvim",
-		install_path,
-	})
-	print("Installing packer close and reopen Neovim...")
-	vim.cmd([[packadd packer.nvim]])
+  PACKER_BOOTSTRAP = fn.system({
+    "git",
+    "clone",
+    "--depth",
+    "1",
+    "https://github.com/wbthomason/packer.nvim",
+    install_path,
+  })
+  print("Installing packer close and reopen Neovim...")
+  vim.cmd([[packadd packer.nvim]])
 end
 
 -- Autocommand that reloads neovim whenever you save the plugins.lua file
@@ -57,72 +55,70 @@ vim.cmd([[
 -- Use a protected call so we don't error out on first use
 local status_ok, packer = pcall(require, "packer")
 if not status_ok then
-	return
+  return
 end
 
 -- Have packer use a popup window
 packer.init({
-	display = {
-		open_fn = function()
-			return require("packer.util").float({ border = "rounded" })
-		end,
-	},
+  display = {
+    open_fn = function()
+      return require("packer.util").float({ border = "rounded" })
+    end,
+  },
 })
 
 -- Install your plugins here
 packer.startup(function()
-	-- My plugins here
+  -- My plugins here
 
-	use({ "wbthomason/packer.nvim" })
-	use({ "nvim-lua/plenary.nvim" }) -- Common utilities
+  use({ "wbthomason/packer.nvim" })
+  use({ "nvim-lua/plenary.nvim" }) -- Common utilities
 
-	-- Colorschemes
-	use({ "EdenEast/nightfox.nvim" }) -- Color scheme
+  -- Colorschemes
+  use({ "EdenEast/nightfox.nvim" })      -- Color scheme
 
-	use({ "nvim-lualine/lualine.nvim" }) -- Statusline
-	use({ "windwp/nvim-autopairs" }) -- Autopairs, integrates with both cmp and treesitter
-	use({ "kyazdani42/nvim-web-devicons" }) -- File icons
-	use({ "akinsho/bufferline.nvim" })
+  use({ "nvim-lualine/lualine.nvim" })   -- Statusline
+  use({ "windwp/nvim-autopairs" })       -- Autopairs, integrates with both cmp and treesitter
+  use({ "kyazdani42/nvim-web-devicons" }) -- File icons
+  use({ "akinsho/bufferline.nvim" })
 
-	-- cmp plugins
-	use({ "hrsh7th/nvim-cmp" }) -- The completion plugin
-	use({ "hrsh7th/cmp-buffer" }) -- buffer completions
-	use({ "hrsh7th/cmp-path" }) -- path completions
-	use({ "hrsh7th/cmp-cmdline" }) -- cmdline completions
-	use({ "saadparwaiz1/cmp_luasnip" }) -- snippet completions
-	use({ "hrsh7th/cmp-nvim-lsp" })
-	use({ "hrsh7th/cmp-nvim-lua" })
-	use({ "onsails/lspkind-nvim" })
+  -- cmp plugins
+  use({ "hrsh7th/nvim-cmp" })        -- The completion plugin
+  use({ "hrsh7th/cmp-buffer" })      -- buffer completions
+  use({ "hrsh7th/cmp-path" })        -- path completions
+  use({ "hrsh7th/cmp-cmdline" })     -- cmdline completions
+  use({ "saadparwaiz1/cmp_luasnip" }) -- snippet completions
+  use({ "hrsh7th/cmp-nvim-lsp" })
+  use({ "hrsh7th/cmp-nvim-lua" })
+  use({ "onsails/lspkind-nvim" })
   use({ "hrsh7th/vim-vsnip" })
 
-	-- snippets
-	use({ "L3MON4D3/LuaSnip" }) --snippet engine
+  -- snippets
+  use({ "L3MON4D3/LuaSnip" }) --snippet engine
 
-	-- LSP
-	use({ "neovim/nvim-lspconfig" }) -- enable LSP
+  -- LSP
+  use({ "neovim/nvim-lspconfig" }) -- enable LSP
   use({ 'williamboman/mason.nvim' })
   use({ 'williamboman/mason-lspconfig.nvim' })
-	use({ "jose-elias-alvarez/null-ls.nvim" }) -- for formatters and linters
-	use({ "glepnir/lspsaga.nvim" }) -- LSP UIs
 
-	-- Formatter
-	use({ "MunifTanjim/prettier.nvim" })
+  -- Formatter
+  use({ "MunifTanjim/prettier.nvim" })
 
-	-- Telescope
-	use({ "nvim-telescope/telescope.nvim" })
+  -- Telescope
+  use({ "nvim-telescope/telescope.nvim" })
 
-	-- Treesitter
-	use({ "nvim-treesitter/nvim-treesitter", { run = ":TSUpdate" } })
-	use({ "nvim-telescope/telescope-file-browser.nvim" })
+  -- Treesitter
+  use({ "nvim-telescope/telescope-file-browser.nvim" })
 
-	use({ "windwp/nvim-ts-autotag" })
+  use({ "windwp/nvim-ts-autotag" })
 
-	-- flutter
-	use({ "akinsho/flutter-tools.nvim" })
+  -- flutter
+  use({ "akinsho/flutter-tools.nvim" })
   use({ "dart-lang/dart-vim-plugin" })
 
   -- fuzzy finder
-  use({ "ibhagwan/fzf-lua",
+  use({
+    "ibhagwan/fzf-lua",
     -- optional for icon support
     requires = { "nvim-tree/nvim-web-devicons" }
   })
@@ -131,75 +127,50 @@ packer.startup(function()
   use({ "scrooloose/nerdtree" })
 
   -- git
-  use({"dinhhuy258/git.nvim"})
-  use({"lewis6991/gitsigns.nvim"})
+  use({ "dinhhuy258/git.nvim" })
+  use({ "lewis6991/gitsigns.nvim" })
 
   -- csv
-  use({"mechatroner/rainbow_csv"})
+  use({ "mechatroner/rainbow_csv" })
 
   -- copilot
-  use({"github/copilot.vim"})
+  use({ "github/copilot.vim" })
 
-	-- Automatically set up your configuration after cloning packer.nvim
-	-- Put this at the end after all plugins
-	if PACKER_BOOTSTRAP then
-		require("packer").sync()
-	end
+  -- Automatically set up your configuration after cloning packer.nvim
+  -- Put this at the end after all plugins
+  if PACKER_BOOTSTRAP then
+    require("packer").sync()
+  end
 end)
 
 -- 1. LSP Sever management
 require('mason').setup()
-
-local servers = {
-  ruby_lsp = {
-    init_options = {
-      formatter = "syntax_tree"
-    }
-  },
-}
 
 require('mason-lspconfig').setup_handlers({ function(server)
   local opt = {
     capabilities = require('cmp_nvim_lsp').update_capabilities(
       vim.lsp.protocol.make_client_capabilities()
     ),
-    settings = servers[server_name],
   }
-  require('lspconfig')[server].setup(opt)
-end })
+  local lspconfig = require('lspconfig')
 
-local null_ls = require("null-ls")
-
-local group = vim.api.nvim_create_augroup("lsp_format_on_save", { clear = false })
-local event = "BufWritePre" -- or "BufWritePost"
-local async = event == "BufWritePost"
-
-null_ls.setup({
-  on_attach = function(client, bufnr)
-    if client.supports_method("textDocument/formatting") then
-      vim.keymap.set("n", "<Leader>f", function()
-        vim.lsp.buf.format({ bufnr = vim.api.nvim_get_current_buf() })
-      end, { buffer = bufnr, desc = "[lsp] format" })
-
-      -- format on save
-      vim.api.nvim_clear_autocmds({ buffer = bufnr, group = group })
-      vim.api.nvim_create_autocmd(event, {
-        buffer = bufnr,
-        group = group,
+  lspconfig.rubocop.setup {}
+  lspconfig.sorbet.setup {}
+  lspconfig.syntax_tree.setup {
+    on_attach = function(client, bufnr)
+      -- 保存時にフォーマット
+      vim.api.nvim_create_autocmd('BufWritePre', {
+        group = vim.api.nvim_create_augroup('LspFormat', { clear = true }),
+        pattern = '*.rb',
         callback = function()
-          vim.lsp.buf.format({ bufnr = bufnr, async = async })
-        end,
-        desc = "[lsp] format on save",
+          vim.lsp.buf.format()
+        end
       })
     end
-
-    if client.supports_method("textDocument/rangeFormatting") then
-      vim.keymap.set("x", "<Leader>f", function()
-        vim.lsp.buf.format({ bufnr = vim.api.nvim_get_current_buf() })
-      end, { buffer = bufnr, desc = "[lsp] format" })
-    end
-  end,
-})
+  }
+  lspconfig.lua_ls.setup {}
+  lspconfig.ts_ls.setup {}
+end })
 
 local prettier = require("prettier")
 
@@ -273,10 +244,43 @@ vim.cmd([[
 -- flutter-tools
 require("flutter-tools").setup {} -- use defaults
 
-require('git').setup()
+require('git').setup({
+  default_mappings = true, -- NOTE: `quit_blame` and `blame_commit` are still merged to the keymaps even if `default_mappings = false`
+
+  keymaps = {
+    -- Open blame window
+    blame = "<Leader>gb",
+    -- Close blame window
+    quit_blame = "q",
+    -- Open blame commit
+    blame_commit = "<CR>",
+    -- Quit blame commit
+    quit_blame_commit = "q",
+    -- Open file/folder in git repository
+    browse = "<Leader>go",
+    -- Open pull request of the current branch
+    open_pull_request = "<Leader>gp",
+    -- Create a pull request with the target branch is set in the `target_branch` option
+    create_pull_request = "<Leader>gn",
+    -- Opens a new diff that compares against the current index
+    diff = "<Leader>gd",
+    -- Close git diff
+    diff_close = "<Leader>gD",
+    -- Revert to the specific commit
+    revert = "<Leader>gr",
+    -- Revert the current file to the specific commit
+    revert_file = "<Leader>gR",
+  },
+  -- Default target branch when create a pull request
+  target_branch = "master",
+  -- Private gitlab hosts, if you use a private gitlab, put your private gitlab host here
+  private_gitlabs = { "https://xxx.git.com" },
+  -- Enable winbar in all windows created by this plugin
+  winbar = false,
+})
 
 require('gitsigns').setup {
-  signs = {
+  signs                        = {
     add          = { text = '┃' },
     change       = { text = '┃' },
     delete       = { text = '_' },
@@ -284,7 +288,7 @@ require('gitsigns').setup {
     changedelete = { text = '~' },
     untracked    = { text = '┆' },
   },
-  signs_staged = {
+  signs_staged                 = {
     add          = { text = '┃' },
     change       = { text = '┃' },
     delete       = { text = '_' },
@@ -292,18 +296,18 @@ require('gitsigns').setup {
     changedelete = { text = '~' },
     untracked    = { text = '┆' },
   },
-  signs_staged_enable = true,
-  signcolumn = true,  -- Toggle with `:Gitsigns toggle_signs`
-  numhl      = false, -- Toggle with `:Gitsigns toggle_numhl`
-  linehl     = false, -- Toggle with `:Gitsigns toggle_linehl`
-  word_diff  = false, -- Toggle with `:Gitsigns toggle_word_diff`
-  watch_gitdir = {
+  signs_staged_enable          = true,
+  signcolumn                   = true, -- Toggle with `:Gitsigns toggle_signs`
+  numhl                        = false, -- Toggle with `:Gitsigns toggle_numhl`
+  linehl                       = false, -- Toggle with `:Gitsigns toggle_linehl`
+  word_diff                    = false, -- Toggle with `:Gitsigns toggle_word_diff`
+  watch_gitdir                 = {
     follow_files = true
   },
-  auto_attach = true,
-  attach_to_untracked = false,
-  current_line_blame = false, -- Toggle with `:Gitsigns toggle_current_line_blame`
-  current_line_blame_opts = {
+  auto_attach                  = true,
+  attach_to_untracked          = false,
+  current_line_blame           = false, -- Toggle with `:Gitsigns toggle_current_line_blame`
+  current_line_blame_opts      = {
     virt_text = true,
     virt_text_pos = 'eol', -- 'eol' | 'overlay' | 'right_align'
     delay = 1000,
@@ -311,11 +315,11 @@ require('gitsigns').setup {
     virt_text_priority = 100,
   },
   current_line_blame_formatter = '<author>, <author_time:%R> - <summary>',
-  sign_priority = 6,
-  update_debounce = 100,
-  status_formatter = nil, -- Use default
-  max_file_length = 40000, -- Disable if file is longer than this (in lines)
-  preview_config = {
+  sign_priority                = 6,
+  update_debounce              = 100,
+  status_formatter             = nil, -- Use default
+  max_file_length              = 40000, -- Disable if file is longer than this (in lines)
+  preview_config               = {
     -- Options passed to nvim_open_win
     border = 'single',
     style = 'minimal',
@@ -342,7 +346,6 @@ vim.cmd([[autocmd TermOpen * setlocal nonumber]])
 vim.keymap.set('t', '<Esc>', [[<C-\><C-n>]])
 vim.keymap.set('t', '<C-[>', [[<C-\><C-n>]])
 
-
 -- normal mode keymap
 vim.keymap.set('n', 'tn', '<cmd>:tabn<CR>')
 vim.keymap.set('n', '<C-a>', '<C-w>')
@@ -354,7 +357,8 @@ vim.cmd('language messages en_US')
 vim.api.nvim_set_keymap("n", "<C-\\>", [[<Cmd>lua require"fzf-lua".buffers()<CR>]], {})
 vim.api.nvim_set_keymap("n", "<C-k>", [[<Cmd>lua require"fzf-lua".builtin()<CR>]], {})
 vim.api.nvim_set_keymap("n", "<C-p>", [[<Cmd>lua require"fzf-lua".files()<CR>]], {})
-vim.api.nvim_set_keymap("n", "<C-l>", [[<Cmd>lua require"fzf-lua".live_grep_glob({ continue_last_search = true })<CR>]], {})
+vim.api.nvim_set_keymap("n", "<C-l>", [[<Cmd>lua require"fzf-lua".live_grep_glob({ continue_last_search = true })<CR>]],
+  {})
 vim.api.nvim_set_keymap("n", "<Cs-l>", [[<Cmd>lua require"fzf-lua".live_grep_glob()<CR>]], {})
 vim.api.nvim_set_keymap("n", "<C-g>", [[<Cmd>lua require"fzf-lua".grep_project()<CR>]], {})
 vim.api.nvim_set_keymap("n", "<F1>", [[<Cmd>lua require"fzf-lua".help_tags()<CR>]], {})
