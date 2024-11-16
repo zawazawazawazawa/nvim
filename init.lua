@@ -173,6 +173,7 @@ require('mason-lspconfig').setup_handlers({ function(server)
   }
   lspconfig.lua_ls.setup {}
   lspconfig.ts_ls.setup {}
+  lspconfig.rust_analyzer.setup {}
 end })
 
 local prettier = require("prettier")
@@ -373,6 +374,6 @@ vim.cmd([[autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NE
 vim.cmd([[autocmd BufRead * normal zR]])
 
 vim.cmd([[
-  autocmd BufWritePre *.dart lua vim.lsp.buf.format()
+  autocmd BufWritePre * lua vim.lsp.buf.format()
 ]])
 
