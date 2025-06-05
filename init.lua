@@ -25,6 +25,19 @@ catch /^Vim\%((\a\+)\)\=:E185/
 endtry
 ]]
 
+-- Focused window highlight
+vim.cmd [[
+  augroup FocusedWindow
+    autocmd!
+    autocmd WinEnter * setlocal winhighlight=Normal:ActiveWindow
+    autocmd WinLeave * setlocal winhighlight=
+  augroup END
+  
+  " Create highlight group for active window with slightly different background
+  autocmd ColorScheme * highlight ActiveWindow guibg=#2a2a3e ctermbg=236
+  highlight ActiveWindow guibg=#2a2a3e ctermbg=236
+]]
+
 -- plugins
 
 local fn = vim.fn
