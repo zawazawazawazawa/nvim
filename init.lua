@@ -148,9 +148,14 @@ packer.startup(function()
 
   -- copilot
   use({ "github/copilot.vim" })
+  use({ "nvim-lua/plenary.nvim" })
+  use({ "CopilotC-Nvim/CopilotChat.nvim", build = "make tiktoken"})
 
   -- mapping
   use({ "tpope/vim-unimpaired" })
+
+  -- terraform
+  use({ "hashivim/vim-terraform" })
 
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins
@@ -159,7 +164,6 @@ packer.startup(function()
   end
 end)
 
--- 1. LSP Sever management
 require('mason').setup()
 
 require('mason-lspconfig').setup_handlers({ function(server)
@@ -171,6 +175,7 @@ require('mason-lspconfig').setup_handlers({ function(server)
   local lspconfig = require('lspconfig')
 
   lspconfig.rubocop.setup {}
+  lspconfig.ruby_lsp.setup {}
   lspconfig.sorbet.setup {}
   lspconfig.syntax_tree.setup {
     on_attach = function(client, bufnr)
@@ -187,6 +192,7 @@ require('mason-lspconfig').setup_handlers({ function(server)
   lspconfig.lua_ls.setup {}
   lspconfig.ts_ls.setup {}
   lspconfig.rust_analyzer.setup {}
+  lspconfig.terraformls.setup {}
 end })
 
 local prettier = require("prettier")
@@ -209,7 +215,11 @@ prettier.setup({
   },
 })
 
--- 2. build-in LSP function
+
+require("CopilotChat").setup {
+  -- See Configuration section for options
+}
+
 -- keyboard shortcut
 vim.keymap.set('n', 'gf', '<cmd>lua vim.lsp.buf.formatting()<CR>')
 vim.keymap.set('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>')
@@ -358,10 +368,13 @@ vim.cmd([[autocmd TermOpen * setlocal nonumber]])
 -- keymap
 vim.keymap.set('t', '<Esc>', [[<C-\><C-n>]])
 vim.keymap.set('t', '<C-[>', [[<C-\><C-n>]])
+vim.keymap.set("i", "jj", "<Esc>")
 
 -- normal mode keymap
 vim.keymap.set('n', 'tn', '<cmd>:tabn<CR>')
 vim.keymap.set('n', '<C-a>', '<C-w>')
+  -- ファイル名をクリップボードにコピー
+vim.keymap.set('n', '<leader>cp', '<cmd>:let @+=expand("%")<CR>')
 
 -- language
 vim.cmd('language messages en_US')
