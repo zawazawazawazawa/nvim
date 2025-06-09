@@ -32,7 +32,7 @@ vim.cmd [[
     autocmd WinEnter * setlocal winhighlight=Normal:ActiveWindow
     autocmd WinLeave * setlocal winhighlight=
   augroup END
-  
+
   " Create highlight group for active window with slightly different background
   autocmd ColorScheme * highlight ActiveWindow guibg=#2a2a3e ctermbg=236
   highlight ActiveWindow guibg=#2a2a3e ctermbg=236
@@ -88,18 +88,18 @@ packer.startup(function()
   use({ "nvim-lua/plenary.nvim" }) -- Common utilities
 
   -- Colorschemes
-  use({ "EdenEast/nightfox.nvim" })      -- Color scheme
+  use({ "EdenEast/nightfox.nvim" })       -- Color scheme
 
-  use({ "nvim-lualine/lualine.nvim" })   -- Statusline
-  use({ "windwp/nvim-autopairs" })       -- Autopairs, integrates with both cmp and treesitter
+  use({ "nvim-lualine/lualine.nvim" })    -- Statusline
+  use({ "windwp/nvim-autopairs" })        -- Autopairs, integrates with both cmp and treesitter
   use({ "kyazdani42/nvim-web-devicons" }) -- File icons
   use({ "akinsho/bufferline.nvim" })
 
   -- cmp plugins
-  use({ "hrsh7th/nvim-cmp" })        -- The completion plugin
-  use({ "hrsh7th/cmp-buffer" })      -- buffer completions
-  use({ "hrsh7th/cmp-path" })        -- path completions
-  use({ "hrsh7th/cmp-cmdline" })     -- cmdline completions
+  use({ "hrsh7th/nvim-cmp" })         -- The completion plugin
+  use({ "hrsh7th/cmp-buffer" })       -- buffer completions
+  use({ "hrsh7th/cmp-path" })         -- path completions
+  use({ "hrsh7th/cmp-cmdline" })      -- cmdline completions
   use({ "saadparwaiz1/cmp_luasnip" }) -- snippet completions
   use({ "hrsh7th/cmp-nvim-lsp" })
   use({ "hrsh7th/cmp-nvim-lua" })
@@ -149,13 +149,15 @@ packer.startup(function()
   -- copilot
   use({ "github/copilot.vim" })
   use({ "nvim-lua/plenary.nvim" })
-  use({ "CopilotC-Nvim/CopilotChat.nvim", build = "make tiktoken"})
+  use({ "CopilotC-Nvim/CopilotChat.nvim", build = "make tiktoken" })
 
   -- mapping
   use({ "tpope/vim-unimpaired" })
 
   -- terraform
   use({ "hashivim/vim-terraform" })
+
+  use({ "3rd/image.nvim" })
 
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins
@@ -219,6 +221,45 @@ prettier.setup({
 require("CopilotChat").setup {
   -- See Configuration section for options
 }
+
+require("image").setup({
+  backend = "kitty",
+  processor = "magick_cli", -- or "magick_rock"
+  integrations = {
+    markdown = {
+      enabled = true,
+      clear_in_insert_mode = false,
+      download_remote_images = true,
+      only_render_image_at_cursor = false,
+      only_render_image_at_cursor_mode = "popup",
+      floating_windows = false,              -- if true, images will be rendered in floating markdown windows
+      filetypes = { "markdown", "vimwiki" }, -- markdown extensions (ie. quarto) can go here
+    },
+    neorg = {
+      enabled = true,
+      filetypes = { "norg" },
+    },
+    typst = {
+      enabled = true,
+      filetypes = { "typst" },
+    },
+    html = {
+      enabled = false,
+    },
+    css = {
+      enabled = false,
+    },
+  },
+  max_width = nil,
+  max_height = nil,
+  max_width_window_percentage = nil,
+  max_height_window_percentage = 50,
+  window_overlap_clear_enabled = false,                                               -- toggles images when windows are overlapped
+  window_overlap_clear_ft_ignore = { "cmp_menu", "cmp_docs", "snacks_notif", "scrollview", "scrollview_sign" },
+  editor_only_render_when_focused = false,                                            -- auto show/hide images when the editor gains/looses focus
+  tmux_show_only_in_active_window = false,                                            -- auto show/hide images in the correct Tmux window (needs visual-activity off)
+  hijack_file_patterns = { "*.png", "*.jpg", "*.jpeg", "*.gif", "*.webp", "*.avif" }, -- render image files as images when opened
+})
 
 -- keyboard shortcut
 vim.keymap.set('n', 'gf', '<cmd>lua vim.lsp.buf.formatting()<CR>')
@@ -320,7 +361,7 @@ require('gitsigns').setup {
     untracked    = { text = '┆' },
   },
   signs_staged_enable          = true,
-  signcolumn                   = true, -- Toggle with `:Gitsigns toggle_signs`
+  signcolumn                   = true,  -- Toggle with `:Gitsigns toggle_signs`
   numhl                        = false, -- Toggle with `:Gitsigns toggle_numhl`
   linehl                       = false, -- Toggle with `:Gitsigns toggle_linehl`
   word_diff                    = false, -- Toggle with `:Gitsigns toggle_word_diff`
@@ -340,7 +381,7 @@ require('gitsigns').setup {
   current_line_blame_formatter = '<author>, <author_time:%R> - <summary>',
   sign_priority                = 6,
   update_debounce              = 100,
-  status_formatter             = nil, -- Use default
+  status_formatter             = nil,   -- Use default
   max_file_length              = 40000, -- Disable if file is longer than this (in lines)
   preview_config               = {
     -- Options passed to nvim_open_win
@@ -369,11 +410,12 @@ vim.cmd([[autocmd TermOpen * setlocal nonumber]])
 vim.keymap.set('t', '<Esc>', [[<C-\><C-n>]])
 vim.keymap.set('t', '<C-[>', [[<C-\><C-n>]])
 vim.keymap.set("i", "jj", "<Esc>")
+vim.keymap.set('t', 'jj', [[<C-\><C-n>]])
 
 -- normal mode keymap
 vim.keymap.set('n', 'tn', '<cmd>:tabn<CR>')
 vim.keymap.set('n', '<C-a>', '<C-w>')
-  -- ファイル名をクリップボードにコピー
+-- ファイル名をクリップボードにコピー
 vim.keymap.set('n', '<leader>cp', '<cmd>:let @+=expand("%")<CR>')
 
 -- language
@@ -402,4 +444,3 @@ vim.cmd([[autocmd BufRead * normal zR]])
 vim.cmd([[
   autocmd BufWritePre * lua vim.lsp.buf.format()
 ]])
-
