@@ -2,10 +2,12 @@ return {
   -- LSP Configuration
   {
     "neovim/nvim-lspconfig",
+    event = { "BufReadPre", "BufNewFile" },
     dependencies = {
       "williamboman/mason.nvim",
       "williamboman/mason-lspconfig.nvim",
       "folke/neodev.nvim",
+      "hrsh7th/cmp-nvim-lsp",
     },
     config = function()
       -- Setup neodev for Neovim Lua development
@@ -38,7 +40,11 @@ return {
 
       -- LSP settings
       local lspconfig = require("lspconfig")
-      local capabilities = require("cmp_nvim_lsp").default_capabilities()
+      local capabilities = vim.lsp.protocol.make_client_capabilities()
+      local cmp_nvim_lsp_ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
+      if cmp_nvim_lsp_ok then
+        capabilities = cmp_nvim_lsp.default_capabilities(capabilities)
+      end
 
       -- LSP handlers
       vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
@@ -49,7 +55,7 @@ return {
         border = "rounded",
       })
 
-      vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
+      vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.handlers.on_publish_diagnostics, {
         virtual_text = false,
         signs = true,
         update_in_insert = false,
@@ -83,7 +89,7 @@ return {
       -- On attach function
       local on_attach = function(client, bufnr)
         -- Enable completion triggered by <c-x><c-o>
-        vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
+        vim.bo[bufnr].omnifunc = "v:lua.vim.lsp.omnifunc"
 
         -- Highlight symbol under cursor
         if client.server_capabilities.documentHighlightProvider then
@@ -103,8 +109,12 @@ return {
         end
       end
 
-      -- Setup servers
-      require("mason-lspconfig").setup_handlers({
+      -- Setup servers with mason-lspconfig
+      local mason_lspconfig = require("mason-lspconfig")
+      
+      -- Ensure setup_handlers is available
+      if mason_lspconfig.setup_handlers then
+        mason_lspconfig.setup_handlers({
         function(server_name)
           lspconfig[server_name].setup({
             capabilities = capabilities,
@@ -162,6 +172,15 @@ return {
           })
         end,
       })
+      else
+        -- Fallback: manually setup servers if setup_handlers is not available
+        for _, server in ipairs(mason_lspconfig.get_installed_servers()) do
+          lspconfig[server].setup({
+            capabilities = capabilities,
+            on_attach = on_attach,
+          })
+        end
+      end
     end,
   },
 
