@@ -70,6 +70,20 @@ return {
     dependencies = { "tpope/vim-fugitive" },
   },
 
+  -- Git blame
+  {
+    "f-person/git-blame.nvim",
+    event = "BufReadPre",
+    config = function()
+      require("gitblame").setup({
+        enabled = true,
+        message_template = " <summary> • <date> • <author>",
+        date_format = "%m-%d-%Y %H:%M:%S",
+        virtual_text_column = 1,
+      })
+    end,
+  },
+
   -- Unimpaired mappings
   {
     "tpope/vim-unimpaired",
@@ -108,10 +122,12 @@ return {
     config = function()
       require("trouble").setup()
       vim.keymap.set("n", "<leader>xx", "<cmd>TroubleToggle<cr>", { desc = "Toggle trouble" })
-      vim.keymap.set("n", "<leader>xw", "<cmd>TroubleToggle workspace_diagnostics<cr>", { desc = "Workspace diagnostics" })
+      vim.keymap.set("n", "<leader>xw", "<cmd>TroubleToggle workspace_diagnostics<cr>",
+        { desc = "Workspace diagnostics" })
       vim.keymap.set("n", "<leader>xd", "<cmd>TroubleToggle document_diagnostics<cr>", { desc = "Document diagnostics" })
       vim.keymap.set("n", "<leader>xq", "<cmd>TroubleToggle quickfix<cr>", { desc = "Quickfix" })
       vim.keymap.set("n", "<leader>xl", "<cmd>TroubleToggle loclist<cr>", { desc = "Location list" })
     end,
   },
 }
+

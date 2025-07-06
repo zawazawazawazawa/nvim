@@ -85,3 +85,8 @@ keymap("n", "<leader>fb", "<cmd>lua require('fzf-lua').builtin()<CR>", { desc = 
 -- Neo-tree
 keymap("n", "<leader>e", "<cmd>Neotree toggle<CR>", { desc = "Toggle file explorer" })
 keymap("n", "<leader>o", "<cmd>Neotree focus<CR>", { desc = "Focus file explorer" })
+
+-- Git blame
+keymap("n", "<leader>gb", "<cmd>GitBlameToggle<CR>", { desc = "Toggle git blame" })
+keymap("n", "<leader>gB", "<cmd>GitBlameCopySHA<CR>", { desc = "Copy git blame SHA" })
+keymap("n", "<leader>go", "<cmd>GitBlameOpenCommitURL<CR>", { desc = "Open commit URL" })
