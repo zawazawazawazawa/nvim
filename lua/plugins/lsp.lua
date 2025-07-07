@@ -55,12 +55,17 @@ return {
         border = "rounded",
       })
 
-      vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.handlers.publish_diagnostics, {
-        virtual_text = false,
-        signs = true,
-        update_in_insert = false,
-        underline = true,
-      })
+      -- Override the default diagnostics handler
+      local publish_diagnostics = vim.lsp.handlers["textDocument/publishDiagnostics"]
+      if publish_diagnostics then
+        vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+          publish_diagnostics, {
+          virtual_text = false,
+          signs = true,
+          update_in_insert = false,
+          underline = true,
+        })
+      end
 
       -- Diagnostic config
       vim.diagnostic.config({
@@ -202,15 +207,15 @@ return {
     opts = {
       formatters_by_ft = {
         lua = { "stylua" },
-        javascript = { { "prettierd", "prettier" } },
-        typescript = { { "prettierd", "prettier" } },
-        javascriptreact = { { "prettierd", "prettier" } },
-        typescriptreact = { { "prettierd", "prettier" } },
-        css = { { "prettierd", "prettier" } },
-        html = { { "prettierd", "prettier" } },
-        json = { { "prettierd", "prettier" } },
-        yaml = { { "prettierd", "prettier" } },
-        markdown = { { "prettierd", "prettier" } },
+        javascript = { "prettierd", "prettier", stop_after_first = true },
+        typescript = { "prettierd", "prettier", stop_after_first = true },
+        javascriptreact = { "prettierd", "prettier", stop_after_first = true },
+        typescriptreact = { "prettierd", "prettier", stop_after_first = true },
+        css = { "prettierd", "prettier", stop_after_first = true },
+        html = { "prettierd", "prettier", stop_after_first = true },
+        json = { "prettierd", "prettier", stop_after_first = true },
+        yaml = { "prettierd", "prettier", stop_after_first = true },
+        markdown = { "prettierd", "prettier", stop_after_first = true },
         ruby = { "rubocop" },
         rust = { "rustfmt" },
         terraform = { "terraform_fmt" },
@@ -225,11 +230,25 @@ return {
   -- Flutter tools
   {
     "akinsho/flutter-tools.nvim",
-    lazy = false,
+    lazy = true,
+    ft = { "dart" },
     dependencies = {
       "nvim-lua/plenary.nvim",
       "stevearc/dressing.nvim",
     },
-    config = true,
+    config = function()
+      local capabilities = vim.lsp.protocol.make_client_capabilities()
+      local ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
+      if ok then
+        capabilities = cmp_nvim_lsp.default_capabilities(capabilities)
+      end
+      
+      require("flutter-tools").setup({
+        lsp = {
+          capabilities = capabilities,
+          handlers = vim.lsp.handlers,
+        },
+      })
+    end,
   },
 }
