@@ -50,6 +50,13 @@ return {
             enabled = true,
           },
           use_libuv_file_watcher = true,
+          filtered_items = {
+            visible = true,
+            hide_gitignored = false,
+            hide_dotfiles = false,
+            hide_by_name = {},
+            hide_by_pattern = {},
+          },
         },
         window = {
           width = 30,
