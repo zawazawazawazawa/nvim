@@ -45,15 +45,20 @@ autocmd("WinEnter", {
 autocmd("WinLeave", {
   group = "FocusedWindow",
   callback = function()
-    vim.wo.winhighlight = ""
+    vim.wo.winhighlight = "Normal:NormalNC"
   end,
 })
 
--- Create highlight group for active window
+-- Create highlight groups for active/inactive windows
 autocmd("ColorScheme", {
   pattern = "*",
   callback = function()
-    vim.api.nvim_set_hl(0, "ActiveWindow", { bg = "#2a2a3e" })
+    -- フォーカス中のウィンドウの背景色（黒っぽい色）
+    vim.api.nvim_set_hl(0, "ActiveWindow", { bg = "#0a0a0f" })
+    -- フォーカスが外れたウィンドウの背景色（薄い色）
+    vim.api.nvim_set_hl(0, "NormalNC", { bg = "#1a1a2e" })
+    -- オプション: ステータスラインやその他の要素も調整可能
+    vim.api.nvim_set_hl(0, "WinBarNC", { bg = "#1a1a2e", fg = "#808080" })
   end,
 })
 

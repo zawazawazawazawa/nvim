@@ -69,7 +69,7 @@ return {
 
       -- Diagnostic config
       vim.diagnostic.config({
-        virtual_text = false,
+        virtual_text = true,
         signs = true,
         underline = true,
         update_in_insert = false,
@@ -216,7 +216,7 @@ return {
         json = { "prettierd", "prettier", stop_after_first = true },
         yaml = { "prettierd", "prettier", stop_after_first = true },
         markdown = { "prettierd", "prettier", stop_after_first = true },
-        ruby = { "rubocop" },
+        ruby = { "stree" },
         rust = { "rustfmt" },
         terraform = { "terraform_fmt" },
       },

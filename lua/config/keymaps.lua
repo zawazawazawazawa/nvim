@@ -18,6 +18,15 @@ keymap("n", "<leader>sh", "<C-w>s", { desc = "Split window horizontally" })
 keymap("n", "<leader>se", "<C-w>=", { desc = "Make splits equal size" })
 keymap("n", "<leader>sx", "<cmd>close<CR>", { desc = "Close current split" })
 
+keymap("n", "<C-S-h>", ":vertical resize -5<CR>", { silent = true })
+keymap("n", "<C-S-l>", ":vertical resize +5<CR>", { silent = true })
+keymap("n", "<C-S-j>", ":resize +2<CR>", { silent = true })
+keymap("n", "<C-S-k>", ":resize -2<CR>", { silent = true })
+
+-- Buffer navigation
+keymap("n", "<Tab>", "<cmd>bnext<CR>", { desc = "Next buffer" })
+keymap("n", "<S-Tab>", "<cmd>bprevious<CR>", { desc = "Previous buffer" })
+
 -- Tab navigation
 keymap("n", "tn", "<cmd>tabn<CR>", opts)
 keymap("n", "tp", "<cmd>tabp<CR>", opts)
@@ -28,7 +37,7 @@ keymap("n", "tx", "<cmd>tabclose<CR>", opts)
 keymap("t", "<Esc>", [[<C-\><C-n>]], opts)
 keymap("t", "<C-[>", [[<C-\><C-n>]], opts)
 keymap("t", "jj", [[<C-\><C-n>]], opts)
-keymap("n", "<leader>tt", "<cmd>terminal<CR>", { desc = "Open terminal" })
+-- keymap("n", "<leader>tt", "<cmd>terminal<CR>", { desc = "Open terminal" }) -- Floatermで代替
 
 -- Insert mode
 keymap("i", "jj", "<Esc>", opts)
@@ -70,20 +79,20 @@ keymap("n", "<leader>f", function() vim.lsp.buf.format({ async = true }) end, { 
 keymap("n", "gl", vim.diagnostic.open_float, { desc = "Show line diagnostics" })
 keymap("n", "[d", vim.diagnostic.goto_prev, { desc = "Previous diagnostic" })
 keymap("n", "]d", vim.diagnostic.goto_next, { desc = "Next diagnostic" })
+keymap("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostics list" })
+keymap("n", "<leader>e", vim.diagnostic.open_float, { desc = "Show line diagnostics" })
 
 -- Fzf-lua
 keymap("n", "<C-p>", "<cmd>lua require('fzf-lua').files()<CR>", { desc = "Find files" })
 keymap("n", "<C-\\>", "<cmd>lua require('fzf-lua').buffers()<CR>", { desc = "Find buffers" })
-keymap("n", "<C-g>", "<cmd>lua require('fzf-lua').grep_project()<CR>", { desc = "Grep project" })
-keymap("n", "<C-l>", "<cmd>lua require('fzf-lua').live_grep_glob({ continue_last_search = true })<CR>", { desc = "Live grep" })
-keymap("n", "<C-S-l>", "<cmd>lua require('fzf-lua').live_grep_glob()<CR>", { desc = "New live grep" })
+keymap("n", "<C-g>", "<cmd>lua require('fzf-lua').live_grep_glob()<CR>", { desc = "New live grep" })
 keymap("n", "<leader>fh", "<cmd>lua require('fzf-lua').help_tags()<CR>", { desc = "Help tags" })
 keymap("n", "<leader>fc", "<cmd>lua require('fzf-lua').commands()<CR>", { desc = "Commands" })
 keymap("n", "<leader>fo", "<cmd>lua require('fzf-lua').oldfiles()<CR>", { desc = "Recent files" })
 keymap("n", "<leader>fb", "<cmd>lua require('fzf-lua').builtin()<CR>", { desc = "Fzf builtin" })
 
 -- Neo-tree
-keymap("n", "<leader>e", "<cmd>Neotree toggle<CR>", { desc = "Toggle file explorer" })
+keymap("n", "<leader>E", "<cmd>Neotree toggle<CR>", { desc = "Toggle file explorer" })
 keymap("n", "<leader>o", "<cmd>Neotree focus<CR>", { desc = "Focus file explorer" })
 
 -- Git blame
