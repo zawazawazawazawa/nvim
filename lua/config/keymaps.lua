@@ -95,6 +95,12 @@ keymap("n", "<leader>fb", "<cmd>lua require('fzf-lua').builtin()<CR>", { desc = 
 keymap("n", "<leader>E", "<cmd>Neotree toggle<CR>", { desc = "Toggle file explorer" })
 keymap("n", "<leader>o", "<cmd>Neotree focus<CR>", { desc = "Focus file explorer" })
 
+-- Git
+keymap("n", "<leader>gs", "<cmd>lua require('fzf-lua').git_status()<CR>", { desc = "Git status files" })
+keymap("n", "<leader>gc", "<cmd>lua require('fzf-lua').git_commits()<CR>", { desc = "Git commits" })
+keymap("n", "<leader>gC", "<cmd>lua require('fzf-lua').git_bcommits()<CR>", { desc = "Buffer git commits" })
+keymap("n", "<leader>gf", "<cmd>lua require('fzf-lua').git_files()<CR>", { desc = "Git tracked files" })
+
 -- Git blame
 keymap("n", "<leader>gb", "<cmd>GitBlameToggle<CR>", { desc = "Toggle git blame" })
 keymap("n", "<leader>gB", "<cmd>GitBlameCopySHA<CR>", { desc = "Copy git blame SHA" })

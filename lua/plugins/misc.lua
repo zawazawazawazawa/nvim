@@ -45,8 +45,16 @@ return {
 
   -- CSV support
   {
-    "mechatroner/rainbow_csv",
+    "chrisbra/csv.vim",
     ft = { "csv", "tsv" },
+    config = function()
+      -- CSVファイルを開いた時に自動的に列を整列
+      vim.g.csv_autocmd_arrange = 1
+      -- 区切り文字の設定
+      vim.g.csv_delim = ','
+      -- ヘッダー行を強調表示
+      vim.g.csv_highlight_column = 'y'
+    end,
   },
 
   -- Terraform

@@ -21,18 +21,7 @@ autocmd("TermOpen", {
   end,
 })
 
--- Format on save
-augroup("FormatOnSave", { clear = true })
-autocmd("BufWritePre", {
-  group = "FormatOnSave",
-  pattern = "*",
-  callback = function()
-    local clients = vim.lsp.get_active_clients()
-    if #clients > 0 then
-      vim.lsp.buf.format({ async = false })
-    end
-  end,
-})
+-- Format on save is handled by conform.nvim in lsp.lua
 
 -- Focused window highlight
 augroup("FocusedWindow", { clear = true })
@@ -40,12 +29,16 @@ autocmd("WinEnter", {
   group = "FocusedWindow",
   callback = function()
     vim.wo.winhighlight = "Normal:ActiveWindow"
+    vim.opt_local.cursorline = true
+    vim.opt_local.cursorcolumn = true
   end,
 })
 autocmd("WinLeave", {
   group = "FocusedWindow",
   callback = function()
     vim.wo.winhighlight = "Normal:NormalNC"
+    vim.opt_local.cursorline = false
+    vim.opt_local.cursorcolumn = false
   end,
 })
 
