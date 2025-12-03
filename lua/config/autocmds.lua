@@ -80,3 +80,14 @@ autocmd("BufWritePre", {
     vim.fn.mkdir(vim.fn.fnamemodify(file, ":p:h"), "p")
   end,
 })
+
+-- Open Neo-tree on startup
+augroup("NeoTreeAutoOpen", { clear = true })
+autocmd("VimEnter", {
+  group = "NeoTreeAutoOpen",
+  callback = function()
+    vim.schedule(function()
+      require("neo-tree.command").execute({ action = "show", position = "left" })
+    end)
+  end,
+})
