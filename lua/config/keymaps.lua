@@ -90,6 +90,8 @@ keymap("n", "<leader>fh", "<cmd>lua require('fzf-lua').help_tags()<CR>", { desc 
 keymap("n", "<leader>fc", "<cmd>lua require('fzf-lua').commands()<CR>", { desc = "Commands" })
 keymap("n", "<leader>fo", "<cmd>lua require('fzf-lua').oldfiles()<CR>", { desc = "Recent files" })
 keymap("n", "<leader>fb", "<cmd>lua require('fzf-lua').builtin()<CR>", { desc = "Fzf builtin" })
+keymap("n", "<leader>fF", "<cmd>lua require('fzf-lua').files({ fd_opts = '--no-ignore --hidden --type f' })<CR>", { desc = "Find ALL files" })
+keymap("n", "<leader>fG", "<cmd>lua require('fzf-lua').live_grep_glob({ rg_opts = '--no-ignore --hidden --column --line-number --no-heading --color=always --smart-case' })<CR>", { desc = "Grep ALL files" })
 
 -- Neo-tree
 keymap("n", "<leader>E", "<cmd>Neotree toggle<CR>", { desc = "Toggle file explorer" })

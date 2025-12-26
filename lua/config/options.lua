@@ -23,6 +23,7 @@ opt.smartindent = true
 opt.swapfile = false
 opt.undofile = true
 opt.writebackup = false
+opt.autoread = true -- Auto reload file when changed externally
 opt.cursorline = true
 opt.relativenumber = true
 opt.wrap = false

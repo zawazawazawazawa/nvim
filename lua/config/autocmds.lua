@@ -91,3 +91,22 @@ autocmd("VimEnter", {
     end)
   end,
 })
+
+-- Auto reload file when changed externally
+augroup("AutoReload", { clear = true })
+autocmd({ "FocusGained", "BufEnter", "CursorHold", "CursorHoldI" }, {
+  group = "AutoReload",
+  pattern = "*",
+  callback = function()
+    if vim.fn.mode() ~= "c" and vim.bo.buftype == "" then
+      vim.cmd("checktime")
+    end
+  end,
+})
+autocmd("FileChangedShellPost", {
+  group = "AutoReload",
+  pattern = "*",
+  callback = function()
+    vim.notify("File changed on disk. Buffer reloaded.", vim.log.levels.WARN)
+  end,
+})
