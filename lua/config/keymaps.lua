@@ -107,3 +107,7 @@ keymap("n", "<leader>gf", "<cmd>lua require('fzf-lua').git_files()<CR>", { desc 
 keymap("n", "<leader>gb", "<cmd>GitBlameToggle<CR>", { desc = "Toggle git blame" })
 keymap("n", "<leader>gB", "<cmd>GitBlameCopySHA<CR>", { desc = "Copy git blame SHA" })
 keymap("n", "<leader>go", "<cmd>GitBlameOpenCommitURL<CR>", { desc = "Open commit URL" })
+
+-- GitHub (main branch)
+keymap("n", "<leader>gO", "<cmd>GBrowse main:%<CR>", { desc = "Open in GitHub (main)" })
+keymap("v", "<leader>gO", ":'<,'>GBrowse main:%<CR>", { desc = "Open selection in GitHub (main)" })
