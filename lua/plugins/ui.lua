@@ -201,12 +201,14 @@ return {
           delete = palette.red,
           insert = palette.orange,
           visual = palette.mauve,
+          replace = palette.sky,
         },
         line_opacity = {
           copy = 0.4,
           delete = 0.4,
           insert = 0.4,
           visual = 0.4,
+          replace = 0.4,
         },
       }
     end,
