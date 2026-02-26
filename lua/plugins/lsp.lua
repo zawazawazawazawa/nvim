@@ -39,7 +39,6 @@ return {
       })
 
       -- LSP settings
-      local lspconfig = require("lspconfig")
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       local cmp_nvim_lsp_ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
       if cmp_nvim_lsp_ok then
@@ -114,78 +113,45 @@ return {
         end
       end
 
-      -- Setup servers with mason-lspconfig
+      -- Setup servers using Neovim 0.11+ native API
       local mason_lspconfig = require("mason-lspconfig")
-      
-      -- Ensure setup_handlers is available
-      if mason_lspconfig.setup_handlers then
-        mason_lspconfig.setup_handlers({
-        function(server_name)
-          lspconfig[server_name].setup({
-            capabilities = capabilities,
-            on_attach = on_attach,
-          })
-        end,
 
-        -- Custom configurations
-        ["lua_ls"] = function()
-          lspconfig.lua_ls.setup({
-            capabilities = capabilities,
-            on_attach = on_attach,
-            settings = {
-              Lua = {
-                diagnostics = {
-                  globals = { "vim" },
-                },
-                workspace = {
-                  library = vim.api.nvim_get_runtime_file("", true),
-                  checkThirdParty = false,
-                },
-                telemetry = {
-                  enable = false,
-                },
-              },
-            },
-          })
-        end,
-
-        ["ruby_lsp"] = function()
-          lspconfig.ruby_lsp.setup({
-            capabilities = capabilities,
-            on_attach = on_attach,
-          })
-        end,
-
-        ["rubocop"] = function()
-          lspconfig.rubocop.setup({
-            capabilities = capabilities,
-            on_attach = on_attach,
-          })
-        end,
-
-        ["rust_analyzer"] = function()
-          lspconfig.rust_analyzer.setup({
-            capabilities = capabilities,
-            on_attach = on_attach,
-            settings = {
-              ["rust-analyzer"] = {
-                checkOnSave = {
-                  command = "clippy",
-                },
-              },
-            },
-          })
-        end,
+      -- Default config for all servers
+      vim.lsp.config('*', {
+        capabilities = capabilities,
+        on_attach = on_attach,
       })
-      else
-        -- Fallback: manually setup servers if setup_handlers is not available
-        for _, server in ipairs(mason_lspconfig.get_installed_servers()) do
-          lspconfig[server].setup({
-            capabilities = capabilities,
-            on_attach = on_attach,
-          })
-        end
-      end
+
+      -- Server-specific configurations
+      vim.lsp.config('lua_ls', {
+        settings = {
+          Lua = {
+            diagnostics = {
+              globals = { "vim" },
+            },
+            workspace = {
+              library = vim.api.nvim_get_runtime_file("", true),
+              checkThirdParty = false,
+            },
+            telemetry = {
+              enable = false,
+            },
+          },
+        },
+      })
+
+      vim.lsp.config('rust_analyzer', {
+        settings = {
+          ["rust-analyzer"] = {
+            checkOnSave = {
+              command = "clippy",
+            },
+          },
+        },
+      })
+
+      -- Enable all mason-installed servers
+      vim.lsp.enable(mason_lspconfig.get_installed_servers())
     end,
   },
 
